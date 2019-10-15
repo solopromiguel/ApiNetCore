@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication21.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
         // GET api/values
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {

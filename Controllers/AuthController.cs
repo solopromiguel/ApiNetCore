@@ -50,7 +50,7 @@ namespace WebApplication21.Controllers
             var result = await _userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
 
             var userToReturn = _mapper.Map<UserForDetailedDto>(userToCreate);
-
+            
             if (result.Succeeded)
             {
                 return CreatedAtRoute("GetUser",
@@ -110,46 +110,49 @@ namespace WebApplication21.Controllers
 
                 return Ok(new
                 {
-                    token = GenerateJwtToken(appUser),
+                    token = GenerateJwtToken(appUser).Result,
                     user = userToReturn
                 });
             }
 
             return Unauthorized();
 
-
         }
 
 
-        private string GenerateJwtToken(Users user)
+        private async Task<string> GenerateJwtToken(Users user)
         {
-            //Generate Token
-            var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value);
-            var tokenHandler = new JwtSecurityTokenHandler();
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
 
-            var creds = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(_config.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                         new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                         new Claim(ClaimTypes.Name,user.UserName)
-                }),
-
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds,
-
-
+                SigningCredentials = creds
             };
 
+            var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
 
             return tokenHandler.WriteToken(token);
-
         }
-     }
+
+    }
 }

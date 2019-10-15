@@ -62,6 +62,7 @@ namespace WebApplication21.Controllers
                         using (var fileStream = new FileStream("D:\\AGUAS VERDES\\"+ file.FileName, FileMode.Create))
                         {
                             await file.CopyToAsync(fileStream);
+
                         }
                     }
                     catch (Exception ex)

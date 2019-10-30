@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,17 +35,17 @@ namespace WebApplication21.Controllers
         {
             return _context.Users;
         }
-
+        [AllowAnonymous]
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUsers([FromRoute] int id)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetUsersList()
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var users = await _context.Users.FindAsync(id);
+            var users = await _context.Users.Include(x=>x.Photos).ToListAsync();
 
             if (users == null)
             {
@@ -84,6 +85,15 @@ namespace WebApplication21.Controllers
                 return BadRequest(ex.InnerException.Message);
             }
             
+
+        }
+        [HttpPost("[action]")]
+        public  async Task<IActionResult> guardar([FromBody] Users user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return Ok();
 
         }
         [HttpPost("[action]/{idUser}")]

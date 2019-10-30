@@ -103,9 +103,18 @@ namespace WebApplication21.Data
         }
         public async Task<Users> GetUser(string username)
         {
+            try
+            {
+                return await _context.Users.Where(a => a.UserName.Equals(username.Trim(),
+                  StringComparison.InvariantCultureIgnoreCase)).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
 
-            return await _context.Users.Where(a => a.UserName.Equals(username.Trim(),
-                   StringComparison.InvariantCultureIgnoreCase)).FirstOrDefaultAsync();
+                throw;
+            }
+
+           
 
         }
 

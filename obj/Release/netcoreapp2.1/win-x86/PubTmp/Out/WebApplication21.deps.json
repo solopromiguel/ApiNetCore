@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1/win-x86",
-    "signature": "7747f055789138cd29478224dc84462895ec6d3b"
+    "signature": "0207d3f59d8a45381e9ddd0f15c4817ed504de25"
   },
   "compilationOptions": {
     "defines": [
@@ -25,6 +25,7 @@
       "WebApplication21/1.0.0": {
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "7.0.0",
+          "CloudinaryDotNet": "1.2.0",
           "Microsoft.AspNetCore.App": "2.1.10",
           "Microsoft.EntityFrameworkCore.Design": "2.1.8",
           "Microsoft.NETCore.App": "2.1.10",
@@ -51,6 +52,11 @@
         },
         "compile": {
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
+        }
+      },
+      "CloudinaryDotNet/1.2.0": {
+        "compile": {
+          "lib/netstandard1.3/CloudinaryDotNet.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -3131,6 +3137,7 @@
       "WebApplication21/1.0.0": {
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "7.0.0",
+          "CloudinaryDotNet": "1.2.0",
           "Microsoft.AspNetCore.App": "2.1.10",
           "Microsoft.EntityFrameworkCore.Design": "2.1.8",
           "Microsoft.NETCore.App": "2.1.10",
@@ -3162,6 +3169,14 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "CloudinaryDotNet/1.2.0": {
+        "runtime": {
+          "lib/netstandard1.3/CloudinaryDotNet.dll": {
+            "assemblyVersion": "1.2.0.0",
+            "fileVersion": "1.2.0.0"
           }
         }
       },
@@ -7475,6 +7490,13 @@
       "sha512": "sha512-szI4yeRIM7GWe9JyekW0dKYehPB0t6M+I55fPeCebN6PhS7zQZa0eG3bgOnOx+eP3caSNoE7KEJs2rk7MLsh8w==",
       "path": "automapper.extensions.microsoft.dependencyinjection/7.0.0",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512"
+    },
+    "CloudinaryDotNet/1.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vDVJphErvptCVvDTaLnIs5yxWRmCA7nB2EOMiFK2+Yjc9aBL/InKvKgEQJtYJ08XfiwaPUkYcS1qVqCbMYTOcg==",
+      "path": "cloudinarydotnet/1.2.0",
+      "hashPath": "cloudinarydotnet.1.2.0.nupkg.sha512"
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "type": "package",

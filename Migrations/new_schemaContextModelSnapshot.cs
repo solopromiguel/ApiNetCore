@@ -198,9 +198,13 @@ namespace WebApplication21.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("PublicId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("Url");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);

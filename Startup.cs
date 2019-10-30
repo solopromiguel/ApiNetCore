@@ -82,24 +82,21 @@ namespace WebApplication21
                  .Build();
 
                 options.Filters.Add(new AuthorizeFilter(policy));
-
-                
-
             }
-            )
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddJsonOptions(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            }); 
 
 
             
             services.AddCors();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
-
-            
-
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

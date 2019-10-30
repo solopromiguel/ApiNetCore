@@ -33,13 +33,15 @@ namespace WebApplication21.Controllers
         public AuthController( IConfiguration config,
             IMapper mapper, 
             UserManager<Users> userManager,
-            SignInManager<Users> signInManager)
+            SignInManager<Users> signInManager,
+            IAuthRepository repo)
         {
 
             _config = config;
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _repo = repo;
         }
 
         [HttpPost("register")]
@@ -61,30 +63,38 @@ namespace WebApplication21.Controllers
 
         }
 
-        [HttpPost("changePasword")]
-        public async Task<IActionResult> changePasword( UserForRegisterDto userForRegisterDto)
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> changePassword( UserForRegisterDto userForRegisterDto)
         {
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
-
-            var username =await _repo.GetUser(userForRegisterDto.Username);
-            if (username==null)
+            try
             {
-                return BadRequest("User name does not exist");
+                userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
+
+                var username = await _repo.GetUser(userForRegisterDto.Username);
+                if (username == null)
+                {
+                    return BadRequest("User name does not exist");
+                }
+
+                var userToChange = new Users
+                {
+                    Id = username.Id,
+                    UserName = userForRegisterDto.Username
+                };
+
+                var createUser = await _repo.ChangePassword(userToChange, userForRegisterDto.Password);
+
+                return StatusCode(201);
             }
-
-            var userToChange = new Users
+            catch (Exception ex)
             {
-                Id= username.Id,
-                UserName= userForRegisterDto.Username
-            };
 
-            var createUser = await _repo.ChangePassword(userToChange, userForRegisterDto.Password);
-
-            return StatusCode(201);
+                return BadRequest("Error Inesperado , Intentelo de nuevo");
+            }
+            
 
         }
 
@@ -95,7 +105,7 @@ namespace WebApplication21.Controllers
             var user = await _userManager.FindByNameAsync(userForLoginDto.Username);
             if (user==null)
             {
-                return Unauthorized();
+                return StatusCode(401);
             }
 
             var result = await _signInManager
@@ -107,7 +117,7 @@ namespace WebApplication21.Controllers
                     .FirstOrDefaultAsync(u => u.NormalizedUserName == userForLoginDto.Username.ToUpper());
 
                 var userToReturn = _mapper.Map<UserForListDto>(appUser);
-
+                var token = GenerateJwtToken(appUser).Result;
                 return Ok(new
                 {
                     token = GenerateJwtToken(appUser).Result,
@@ -115,7 +125,7 @@ namespace WebApplication21.Controllers
                 });
             }
 
-            return Unauthorized();
+            return StatusCode(401);
 
         }
 

@@ -17,6 +17,8 @@ namespace WebApplication21.sakila
         public string City { get; set; }
         public string Country { get; set; }
 
+        public string Url { get; set; }
+        public string PublicId { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
         public ICollection<Photo> Photos { get; set; }
 

@@ -52,7 +52,11 @@ namespace WebApplication21.Data
                     sw.WriteLine("@echo off");
                     sw.WriteLine("\"C:\\Program Files (x86)\\ACL Software\\ACL for Windows 14\\ACLWin.exe\"" + " \"D:\\ACL\\INGRESO DOLARES\\Prueba.ACL\"" + " /vProject=\""+file.param1+" \" /bInicio") ;
                 }
+
                 return "TRUE";
+
+
+
             }
             catch (Exception ex)
             {

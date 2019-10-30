@@ -21,3 +21,4 @@ C:\Users\contingencia\source\repos\WebApplication21\WebApplication21\obj\Debug\n
 C:\Users\contingencia\source\repos\WebApplication21\WebApplication21\obj\Debug\netcoreapp2.1\WebApplication21.RazorTargetAssemblyInfo.cs
 C:\Users\contingencia\source\repos\WebApplication21\WebApplication21\obj\Debug\netcoreapp2.1\WebApplication21.Views.pdb
 C:\Users\contingencia\source\repos\WebApplication21\WebApplication21\obj\Debug\netcoreapp2.1\WebApplication21.csproj.CopyComplete
+C:\Users\contingencia\source\repos\WebApplication21\WebApplication21\bin\Debug\netcoreapp2.1\Imagenes\caja_piura.jpg

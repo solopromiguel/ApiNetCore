@@ -63,6 +63,13 @@ namespace WebApplication21.Controllers
 
         }
 
+        [HttpPost("logout")]
+        public async Task<IActionResult> logout()
+        {
+            return Ok();
+
+        }
+
         [HttpPost("changePassword")]
         public async Task<IActionResult> changePassword( UserForRegisterDto userForRegisterDto)
         {

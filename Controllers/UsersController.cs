@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using WebApplication21.Data;
+using WebApplication21.Helpers;
 using WebApplication21.sakila;
 
 namespace WebApplication21.Controllers
@@ -20,13 +23,12 @@ namespace WebApplication21.Controllers
     {
         private readonly new_schemaContext _context;
         private IHostingEnvironment _hostingEnvironment;
-        private readonly IFileProvider _fileProvider;
+        private readonly IDatingRepository _repo;
 
-        public UsersController(new_schemaContext context, IHostingEnvironment environment)
+        public UsersController(new_schemaContext context, IHostingEnvironment environment,IDatingRepository repo)
         {
             _context = context;
             _hostingEnvironment = environment;
-            //_fileProvider = fileProvider;
         }
 
         // GET: api/Users
@@ -35,22 +37,15 @@ namespace WebApplication21.Controllers
         {
             return _context.Users;
         }
-        [AllowAnonymous]
+    
         // GET: api/Users/5
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetUsersList()
+        public async Task<IActionResult> GetUsersList([FromQuery] UserParams userParams)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var users = await _repo.GetUsers(userParams);
 
-            var users = await _context.Users.Include(x=>x.Photos).ToListAsync();
-
-            if (users == null)
-            {
-                return NotFound();
-            }
+            Response.AddPagination(users.CurrentPage, users.PageSize,
+               users.TotalCount, users.TotalPages);
 
             return Ok(users);
         }

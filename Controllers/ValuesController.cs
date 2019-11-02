@@ -8,7 +8,7 @@ using WebApplication21.sakila;
 
 namespace WebApplication21.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase

@@ -71,6 +71,16 @@ namespace WebApplication21.Controllers
             return Ok(new { user.Url});
 
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Descomprimir([FromBody] string path)
+        {
+
+            fservice.readZipFile(path);
+
+            return Ok();
+
+        }
+
 
         [HttpPost("[action]/{userId}")]
         public async Task<IActionResult> AddPhotoForUser([FromRoute] int userId,  [FromForm] IList<IFormFile> File)

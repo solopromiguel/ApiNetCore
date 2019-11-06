@@ -7,8 +7,21 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApplication21.sakila;
 
-namespace WebApplication21.Data
+namespace WebApplication21.Repository
 {
+    public interface IAuthRepository
+    {
+        Task<Users> Register(Users user, string password);
+
+        Task<Users> Login(string username, string password);
+
+        Task<bool> UserExists(string username);
+
+        Task<Users> GetUser(string username);
+
+        Task<Users> ChangePassword(Users user, string username);
+    }
+
     public class AuthRepository : IAuthRepository
     {
         private readonly new_schemaContext _context;
@@ -25,17 +38,17 @@ namespace WebApplication21.Data
 
             if (user == null)
                 return null;
-            
+
 
             //if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             //    return null;
 
             return user;
-        }   
+        }
         public async Task<Users> Register(Users user, string password)
         {
 
-            using (var context=new new_schemaContext())
+            using (var context = new new_schemaContext())
             {
                 byte[] passwordHash, passwordSalt;
 
@@ -56,7 +69,7 @@ namespace WebApplication21.Data
                 return user;
 
             }
-            
+
         }
 
 
@@ -70,7 +83,7 @@ namespace WebApplication21.Data
 
             return false;
         }
-       
+
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             // This not the only way to secure a password
@@ -114,7 +127,7 @@ namespace WebApplication21.Data
                 throw;
             }
 
-           
+
 
         }
 
@@ -123,7 +136,7 @@ namespace WebApplication21.Data
 
             using (var context = new new_schemaContext())
             {
-                Users userDto = await context.Users.FirstAsync(x=>x.Id==user.Id); 
+                Users userDto = await context.Users.FirstAsync(x => x.Id == user.Id);
 
                 byte[] passwordHash, passwordSalt;
 
@@ -133,15 +146,11 @@ namespace WebApplication21.Data
                 //userDto.PasswordSalt = passwordSalt;
 
                 await context.SaveChangesAsync();
-               
+
                 return userDto;
 
             }
 
         }
-
-
-
-
     }
 }

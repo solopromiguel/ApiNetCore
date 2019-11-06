@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication21.Data;
+using WebApplication21.Repository;
 using WebApplication21.sakila;
 using WebApplication21.Dtos;
 using Microsoft.AspNetCore.Hosting;

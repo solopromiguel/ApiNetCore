@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using WebApplication21.Data;
+using WebApplication21.Repository;
 using WebApplication21.Helpers;
 using WebApplication21.sakila;
 

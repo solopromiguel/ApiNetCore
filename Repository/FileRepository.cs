@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using WebApplication21.Dtos;
 
-namespace WebApplication21.Data
+namespace WebApplication21.Repository
 {
     public class FileRepository
     {

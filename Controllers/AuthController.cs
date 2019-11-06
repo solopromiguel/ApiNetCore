@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using WebApplication21.Data;
+using WebApplication21.Repository;
 using WebApplication21.Dtos;
 using WebApplication21.sakila;
 
@@ -135,7 +135,6 @@ namespace WebApplication21.Controllers
             return StatusCode(401);
 
         }
-
 
         private async Task<string> GenerateJwtToken(Users user)
         {

@@ -5,8 +5,17 @@ using System.Threading.Tasks;
 using WebApplication21.Helpers;
 using WebApplication21.sakila;
 
-namespace WebApplication21.Data
+namespace WebApplication21.Repository
 {
+   public interface IDatingRepository
+    {
+        void Add<T>(T entity) where T : class;
+        void Delete<T>(T entity) where T : class;
+        Task<bool> SaveAll();
+        Task<PagedList<Users>> GetUsers(UserParams userParams);
+        Task<Users> GetUser(int id, bool isCurrentUser);
+    }
+
     public class DatingRepository : IDatingRepository
     {
         private readonly new_schemaContext _context;

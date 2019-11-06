@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using WebApplication21.sakila;
 
-namespace WebApplication21.Data
+namespace WebApplication21.Repository
 {
     public class Seed
     {

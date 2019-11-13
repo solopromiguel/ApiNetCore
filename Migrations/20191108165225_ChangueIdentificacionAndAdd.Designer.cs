@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication21.sakila;
 
 namespace WebApplication21.Migrations
 {
     [DbContext(typeof(new_schemaContext))]
-    partial class new_schemaContextModelSnapshot : ModelSnapshot
+    [Migration("20191108165225_ChangueIdentificacionAndAdd")]
+    partial class ChangueIdentificacionAndAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,10 +87,42 @@ namespace WebApplication21.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebApplication21.sakila.AnalisisProducto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Area");
+
+                    b.Property<string>("Descripcion");
+
+                    b.Property<int>("EvaluacionId");
+
+                    b.Property<DateTime>("FechaCreate");
+
+                    b.Property<int>("IdentificacionId");
+
+                    b.Property<string>("Nombre");
+
+                    b.Property<int>("UsersId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EvaluacionId");
+
+                    b.HasIndex("IdentificacionId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("AnalisisProductos");
+                });
+
             modelBuilder.Entity("WebApplication21.sakila.Caracteristica", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CaracteristicaId");
 
                     b.Property<string>("Cod");
 
@@ -103,6 +137,8 @@ namespace WebApplication21.Migrations
                     b.Property<int>("UsersId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CaracteristicaId");
 
                     b.HasIndex("FactorId");
 
@@ -120,12 +156,6 @@ namespace WebApplication21.Migrations
 
                     b.Property<string>("Cargo");
 
-                    b.Property<int>("ControlBaseId");
-
-                    b.Property<int>("ControlMainId");
-
-                    b.Property<string>("Descripcion");
-
                     b.Property<bool>("Estado");
 
                     b.Property<int?>("EvaluacionId");
@@ -135,8 +165,6 @@ namespace WebApplication21.Migrations
                     b.Property<string>("Formalizacion");
 
                     b.Property<string>("Grado");
-
-                    b.Property<bool>("IsMain");
 
                     b.Property<string>("Oportunidad");
 
@@ -153,46 +181,12 @@ namespace WebApplication21.Migrations
                     b.ToTable("Control");
                 });
 
-            modelBuilder.Entity("WebApplication21.sakila.ControlRiesgo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Calificacion");
-
-                    b.Property<string>("Cargo");
-
-                    b.Property<int>("ControlId");
-
-                    b.Property<string>("Descripcion");
-
-                    b.Property<bool>("Estado");
-
-                    b.Property<DateTime>("Fecha");
-
-                    b.Property<string>("Formalizacion");
-
-                    b.Property<string>("Grado");
-
-                    b.Property<string>("Oportunidad");
-
-                    b.Property<string>("Periodicidad");
-
-                    b.Property<int>("UsersId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ControlId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ControlRiesgos");
-                });
-
             modelBuilder.Entity("WebApplication21.sakila.Evaluacion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnalisisProductoId");
 
                     b.Property<int>("CaracteristicaId");
 
@@ -215,6 +209,8 @@ namespace WebApplication21.Migrations
                     b.Property<int>("UsersId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnalisisProductoId");
 
                     b.HasIndex("CaracteristicaId");
 
@@ -250,13 +246,7 @@ namespace WebApplication21.Migrations
 
                     b.Property<string>("Descripcion");
 
-                    b.Property<int>("IdentificacionBaseId");
-
-                    b.Property<int>("IdentificacionMainId");
-
                     b.Property<string>("Impacto");
-
-                    b.Property<bool>("IsMain");
 
                     b.Property<string>("Probabilidad");
 
@@ -269,6 +259,32 @@ namespace WebApplication21.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("Identificacions");
+                });
+
+            modelBuilder.Entity("WebApplication21.sakila.IdentificacionProducto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AnalisisProductoId");
+
+                    b.Property<string>("Area");
+
+                    b.Property<string>("Descripcion");
+
+                    b.Property<DateTime>("FechaCreate");
+
+                    b.Property<string>("Nombre");
+
+                    b.Property<int>("UsersId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalisisProductoId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("IdentificacionProductos");
                 });
 
             modelBuilder.Entity("WebApplication21.sakila.Photo", b =>
@@ -295,36 +311,6 @@ namespace WebApplication21.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Photo");
-                });
-
-            modelBuilder.Entity("WebApplication21.sakila.Riesgo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Calificacion");
-
-                    b.Property<int>("CaracteristicaId");
-
-                    b.Property<string>("Descripcion");
-
-                    b.Property<string>("Impacto");
-
-                    b.Property<string>("Probabilidad");
-
-                    b.Property<string>("RiesgoInherente");
-
-                    b.Property<string>("RiesgoResidual");
-
-                    b.Property<int>("UsersId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CaracteristicaId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("Riesgos");
                 });
 
             modelBuilder.Entity("WebApplication21.sakila.Role", b =>
@@ -469,8 +455,30 @@ namespace WebApplication21.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("WebApplication21.sakila.AnalisisProducto", b =>
+                {
+                    b.HasOne("WebApplication21.sakila.Evaluacion", "Evaluacion")
+                        .WithMany()
+                        .HasForeignKey("EvaluacionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebApplication21.sakila.Identificacion", "Identificacion")
+                        .WithMany()
+                        .HasForeignKey("IdentificacionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebApplication21.sakila.Users", "Users")
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("WebApplication21.sakila.Caracteristica", b =>
                 {
+                    b.HasOne("WebApplication21.sakila.Caracteristica")
+                        .WithMany("Caracteristicas")
+                        .HasForeignKey("CaracteristicaId");
+
                     b.HasOne("WebApplication21.sakila.Factor", "Factor")
                         .WithMany()
                         .HasForeignKey("FactorId")
@@ -494,21 +502,13 @@ namespace WebApplication21.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebApplication21.sakila.ControlRiesgo", b =>
-                {
-                    b.HasOne("WebApplication21.sakila.Control", "Control")
-                        .WithMany()
-                        .HasForeignKey("ControlId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebApplication21.sakila.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("WebApplication21.sakila.Evaluacion", b =>
                 {
+                    b.HasOne("WebApplication21.sakila.AnalisisProducto", "AnalisisProducto")
+                        .WithMany()
+                        .HasForeignKey("AnalisisProductoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("WebApplication21.sakila.Caracteristica", "Caracteristica")
                         .WithMany()
                         .HasForeignKey("CaracteristicaId")
@@ -528,8 +528,21 @@ namespace WebApplication21.Migrations
             modelBuilder.Entity("WebApplication21.sakila.Identificacion", b =>
                 {
                     b.HasOne("WebApplication21.sakila.Caracteristica", "Caracteristica")
-                        .WithMany("Identificacions")
+                        .WithMany()
                         .HasForeignKey("CaracteristicaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebApplication21.sakila.Users", "Users")
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebApplication21.sakila.IdentificacionProducto", b =>
+                {
+                    b.HasOne("WebApplication21.sakila.AnalisisProducto", "AnalisisProducto")
+                        .WithMany()
+                        .HasForeignKey("AnalisisProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebApplication21.sakila.Users", "Users")
@@ -543,19 +556,6 @@ namespace WebApplication21.Migrations
                     b.HasOne("WebApplication21.sakila.Users", "User")
                         .WithMany("Photos")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WebApplication21.sakila.Riesgo", b =>
-                {
-                    b.HasOne("WebApplication21.sakila.Caracteristica", "Caracteristica")
-                        .WithMany()
-                        .HasForeignKey("CaracteristicaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebApplication21.sakila.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

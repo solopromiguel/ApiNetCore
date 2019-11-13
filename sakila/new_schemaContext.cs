@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using WebApplication21.sakila;
 
 namespace WebApplication21.sakila
 {
@@ -20,9 +21,19 @@ namespace WebApplication21.sakila
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
 
+        public virtual DbSet<Caracteristica> Caracteristicas { get; set; }
+        public virtual DbSet<Factor> Factors { get; set; }
+        public virtual DbSet<Evaluacion> Evaluacions { get; set; }
+       
+        public virtual DbSet<Identificacion> Identificacions { get; set; }
+
+        public virtual DbSet<Riesgo> Riesgos { get; set; }
+        public virtual DbSet<ControlRiesgo> ControlRiesgos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            
+
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
@@ -33,6 +44,7 @@ namespace WebApplication21.sakila
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
 
             modelBuilder.Entity<UserRole>(userRole =>
             {
@@ -49,5 +61,7 @@ namespace WebApplication21.sakila
                     .IsRequired();
             });
         }
+
+        public DbSet<WebApplication21.sakila.Control> Control { get; set; }
     }
 }

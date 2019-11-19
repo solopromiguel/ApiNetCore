@@ -42,7 +42,9 @@ namespace WebApplication21.Controllers
                                                   descripcionCarateristica = x.Caracteristica.Descripcion,
                                                   x.Impacto,
                                                   x.Probabilidad,
-                                                  descripcionIdentificacion = x.Descripcion
+                                                  descripcionIdentificacion = x.Descripcion,
+
+
 
                                               })
                                              .AsNoTracking()

@@ -27,6 +27,17 @@ namespace WebApplication21.Controllers
             return _context.Control;
         }
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetListControls()
+        {
+
+            return Ok(
+                await _context.Control
+                .Where(x=>x.IsMain)
+                .AsNoTracking()
+                .ToListAsync());
+        }
+
         // GET: api/Controls/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetControl([FromRoute] int id)

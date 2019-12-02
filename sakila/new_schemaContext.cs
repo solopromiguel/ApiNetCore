@@ -24,7 +24,8 @@ namespace WebApplication21.sakila
         public virtual DbSet<Caracteristica> Caracteristicas { get; set; }
         public virtual DbSet<Factor> Factors { get; set; }
         public virtual DbSet<Evaluacion> Evaluacions { get; set; }
-       
+        public virtual DbSet<EtapaIdentificacion> Etapas { get; set; }
+
         public virtual DbSet<Identificacion> Identificacions { get; set; }
 
         public virtual DbSet<Riesgo> Riesgos { get; set; }

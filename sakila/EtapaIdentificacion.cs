@@ -17,10 +17,8 @@ namespace WebApplication21.sakila
         public int UsersId { get; set; }
         public Users Users { get; set; }
     }
-
     public class Riesgo
     {
-
         public int Id { get; set; }
         public string Calificacion { get; set; }
         public string Descripcion { get; set; }
@@ -31,7 +29,6 @@ namespace WebApplication21.sakila
         public string RiesgoInherente { get; set; }
         public string RiesgoResidual { get; set; }
 
-
         public int UsersId { get; set; }
         public Users Users { get; set; }
 
@@ -40,8 +37,6 @@ namespace WebApplication21.sakila
         public Caracteristica Caracteristica { get; set; }
 
         public ICollection<ControlRiesgo> Controles;
-
-
     }
 
     public class ControlRiesgo

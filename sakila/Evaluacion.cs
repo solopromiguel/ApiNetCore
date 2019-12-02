@@ -27,7 +27,7 @@ namespace WebApplication21.sakila
         public int FactorId { get; set; }
         public Factor Factor { get; set; }
         public int CaracteristicaId { get; set; }
-        public Caracteristica Caracteristica { get; set; }
+        public Caracteristica Caracteristica { get; set; }  
 
         public ICollection<Control> Controls { get; set; }
     }

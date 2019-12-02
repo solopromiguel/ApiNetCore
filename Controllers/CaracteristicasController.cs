@@ -32,7 +32,7 @@ namespace WebApplication21.Controllers
 
             try
             {
-                return Ok(await _context.Identificacions
+                var modelReturn = await _context.Identificacions
                                              .Where(c => c.Caracteristica.FactorId == IdFactor)
                                              .Include(x => x.Caracteristica)
                                               .Select(x => new
@@ -45,7 +45,8 @@ namespace WebApplication21.Controllers
                                                   descripcionIdentificacion = x.Descripcion,
                                               })
                                              .AsNoTracking()
-                                             .ToListAsync());
+                                             .ToListAsync();
+                return Ok(modelReturn);
             }
             catch (Exception)
             {

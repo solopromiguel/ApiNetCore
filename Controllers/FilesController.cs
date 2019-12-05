@@ -14,11 +14,13 @@ using CloudinaryDotNet;
 using WebApplication21.Helpers;
 using Microsoft.Extensions.Options;
 using CloudinaryDotNet.Actions;
+using WebApplication21.Utility;
 
 namespace WebApplication21.Controllers
 {
     [AllowAnonymous]
     [Route("api/[controller]")]
+   // [Produces("application/ms-word")]
     [ApiController]
     public class FilesController : ControllerBase
     {
@@ -44,6 +46,40 @@ namespace WebApplication21.Controllers
             _cloudinary = new Cloudinary(acc);
         }
 
+        [HttpGet("Export")]
+        [Produces("application/ms-word")]
+        public async Task<IActionResult> Export()
+        {
+            try
+            {
+                var demoDto = new DemoDto() { nomfile = "NOMBRE DE PROYECTO", inombre = "ARMANDO GONZALES CAJAS", icargo = "ANALISTA", fecha = "20/09/19" };
+
+
+                return Ok(demoDto);
+            }
+            catch (Exception ex)
+            {
+                //log the exception
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("ExportDoc")]
+        public  IActionResult ExportDoc()
+        {
+            try
+            {
+                var filePath = string.Format("./DataExport/myfile.docx", DateTime.Now.Ticks);
+                var result = Util.ReadAllBytes(filePath);
+                return Ok( new { result } );
+            }
+            catch (Exception ex)
+            {
+                //log the exception
+                return BadRequest();
+            }
+        }
+
         [HttpPost("[action]")]
         public IActionResult fileMethod([FromBody]  FileDto fileDto)
         {
@@ -61,6 +97,9 @@ namespace WebApplication21.Controllers
 
             return BadRequest(result);
         }
+
+
+
         [HttpGet("[action]/{userId}")]
         public async Task<IActionResult> currentPhotoUrl([FromRoute] int userId)
         {

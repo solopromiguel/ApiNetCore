@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication21.Dtos;
 using WebApplication21.sakila;
 
 namespace WebApplication21.Controllers
@@ -21,6 +22,7 @@ namespace WebApplication21.Controllers
         }
 
         [HttpPost("[action]")]
+        [Produces("application/ms-word")]
         public async Task<IActionResult> GuardarEvaluacion([FromBody] EtapaIdentificacion model)
         {
             try
@@ -34,10 +36,10 @@ namespace WebApplication21.Controllers
                 }
 
                 _context.Etapas.Add(model);
-                _context.SaveChanges();
+               // _context.SaveChanges();
 
+                return Ok(model);
 
-                return Ok();
             }
             catch (Exception ex)
             {
@@ -45,6 +47,10 @@ namespace WebApplication21.Controllers
                 throw;
             }
             
-        }   
+        }  
+        
+
+
+
       }
 }

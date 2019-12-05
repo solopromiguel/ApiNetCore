@@ -7,7 +7,9 @@ namespace WebApplication21.Dtos
 {
     public class DemoDto
     {
-        public string Welcome { get; set; }
-        public string HelloWorld { get; set; }
+        public string nomfile { get; set; }
+        public string inombre { get; set; }
+        public string icargo { get; set; }
+        public string fecha { get; set; }
     }
 }

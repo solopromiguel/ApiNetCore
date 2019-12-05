@@ -17,6 +17,9 @@ using Microsoft.IdentityModel.Tokens;
 using WebApplication21.Repository;
 using WebApplication21.Helpers;
 using WebApplication21.sakila;
+using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace WebApplication21
 {
@@ -81,10 +84,22 @@ namespace WebApplication21
             {
                 opt.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            }); 
+                opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                opt.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
+                opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
+
+            services.AddMvc(config =>
+            {
+                config.OutputFormatters.Add(new WordOutputFormatter());
+                config.FormatterMappings.SetMediaTypeMappingForFormat(
+                  "docx", MediaTypeHeaderValue.Parse("application/ms-word"));
+
+            });
 
 
-            
+
             services.AddCors();
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);

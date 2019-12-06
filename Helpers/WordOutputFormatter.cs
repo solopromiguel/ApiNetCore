@@ -36,11 +36,19 @@ namespace WebApplication21.Helpers
                 File.Delete(filePath);
             }
 
-
             var templatePath = string.Format("./DataExport/my-template.docx");
 
 
-            EtapaIdentificacion viewModel = context.Object as EtapaIdentificacion;
+            //EtapaIdentificacion viewModel = context.Object as EtapaIdentificacion;
+            OutDto viewModel1 = context.Object as OutDto;
+
+            EtapaIdentificacion viewModel=null;
+
+            if (viewModel1.NameModel.Equals("EtapaIdentificacion"))
+            {
+                viewModel = viewModel1.Result as EtapaIdentificacion;
+            }
+
 
             //open the template then save it as another file (while also stream it to the user)
 

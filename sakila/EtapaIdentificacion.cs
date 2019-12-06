@@ -32,9 +32,14 @@ namespace WebApplication21.sakila
         public int UsersId { get; set; }
         public Users Users { get; set; }
 
-        [ForeignKey("Caracteristica")]
-        public int CaracteristicaId { get; set; }
-        public Caracteristica Caracteristica { get; set; }
+        //[ForeignKey("Caracteristica")]
+        //public int CaracteristicaId { get; set; }
+        //public Caracteristica Caracteristica { get; set; }
+
+        [ForeignKey("Identificacion")]
+        public int IdentificacionId { get; set; }
+        public Identificacion Identificacion { get; set; }
+
 
         public ICollection<ControlRiesgo> Controles;
     }

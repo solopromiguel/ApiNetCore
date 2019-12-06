@@ -53,8 +53,6 @@ namespace WebApplication21.Controllers
             try
             {
                 var demoDto = new DemoDto() { nomfile = "NOMBRE DE PROYECTO", inombre = "ARMANDO GONZALES CAJAS", icargo = "ANALISTA", fecha = "20/09/19" };
-
-
                 return Ok(demoDto);
             }
             catch (Exception ex)

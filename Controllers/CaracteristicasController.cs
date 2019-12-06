@@ -43,6 +43,7 @@ namespace WebApplication21.Controllers
                                                   x.Impacto,
                                                   x.Probabilidad,
                                                   descripcionIdentificacion = x.Descripcion,
+                                                  x.CaracteristicaId
                                               })
                                              .AsNoTracking()
                                              .ToListAsync();

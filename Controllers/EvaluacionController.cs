@@ -33,12 +33,20 @@ namespace WebApplication21.Controllers
                 foreach (var item in model.Riesgos)
                 {
                     item.UsersId = UserId;
+                    item.Id = 0;
                 }
 
-                _context.Etapas.Add(model);
-               // _context.SaveChanges();
 
-                return Ok(model);
+                _context.Etapas.Add(model);
+                _context.SaveChanges();
+
+                OutDto outDto = new OutDto
+                {
+                    NameModel= "EtapaIdentificacion",
+                    Result=model
+                };
+
+                return Ok(outDto);
 
             }
             catch (Exception ex)

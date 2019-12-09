@@ -12,6 +12,7 @@ using Microsoft.Net.Http.Headers;
 using System.Threading.Tasks;
 using WebApplication21.Dtos;
 using WebApplication21.sakila;
+using Control = WebApplication21.sakila.Control;
 
 namespace WebApplication21.Helpers
 {
@@ -31,13 +32,9 @@ namespace WebApplication21.Helpers
 
             var filePath = string.Format("./DataExport/myfile.docx", DateTime.Now.Ticks);
 
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
+            if (File.Exists(filePath))File.Delete(filePath);
 
             var templatePath = "";
-
 
             //EtapaIdentificacion viewModel = context.Object as EtapaIdentificacion;
             OutDto viewModel1 = context.Object as OutDto;
@@ -62,13 +59,14 @@ namespace WebApplication21.Helpers
                 using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(mem, true))
                 {
 
-                    if (viewModelEtapaIdentificacion != null) { };
-
+                    if (viewModelEtapaIdentificacion != null) {
 
                     var body = wordDoc.MainDocumentPart.Document.Body;
                     var paras = body.Elements<Paragraph>();
 
-                    SearchAndReplaceText(wordDoc, "nomfile","texto");
+                    SearchAndReplaceText(wordDoc, "nomfile", "CANALES ELECTRONICO");
+                    SearchAndReplaceText(wordDoc, "inombre", "Ing. Armando Manuel Gonzales Cajes");
+                    SearchAndReplaceText(wordDoc, "icargo", "Asistente de Cumplimiento");
 
                     body.Append(AddParagraph("Anexo 01", true, JustificationValues.Center));
                     body.Append(AddParagraph("IDENTIFICACIÓN DE LOS RIESGOS DE LAFT Y RIESGOS ASOCIADOS", false, JustificationValues.Center));
@@ -91,9 +89,20 @@ namespace WebApplication21.Helpers
 
                     body.Append(AddTableAnexo2(viewModelEtapaIdentificacion));
 
+
+                    body.Append(PageBreak());
+
+
+                    body.Append(AddParagraph("Anexo 03", true, JustificationValues.Center));
+                    body.Append(AddParagraph("CONTROLES IDENTIFICADOS Y CARACTERÍSTICAS", false, JustificationValues.Center));
+                    body.Append(AddParagraph("", false, JustificationValues.Center));
+                  
+
+                    body.Append(AddTableAnexo3(viewModelEtapaIdentificacion));
+
                     wordDoc.Close();
 
-
+                    };
                 }
 
                 using (FileStream fileStream = new FileStream(filePath, System.IO.FileMode.CreateNew))
@@ -255,6 +264,166 @@ namespace WebApplication21.Helpers
             return table;
             //}
             }
+        public Table AddTableAnexo3(EtapaIdentificacion data)
+        {
+            Table table = new Table();
+
+            TableProperties props = new TableProperties(
+
+                    new TableBorders(
+                    new TopBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 8,
+
+                    },
+                    new BottomBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 8
+                    },
+                    new LeftBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 8
+                    },
+                    new RightBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 8
+                    },
+                    new InsideHorizontalBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 8
+                    },
+                    new TableLook()
+                    {
+                        Val = "04A0",
+                        FirstRow = true,
+                        LastRow = false,
+                        FirstColumn = true,
+                        LastColumn = false,
+                        NoHorizontalBand = false,
+                        NoVerticalBand = true
+                    },
+
+                    new InsideVerticalBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 8
+                    }));
+
+            TableLook tableLook1 = new TableLook() { Val = "04A0", FirstRow = true, LastRow = false, FirstColumn = true, LastColumn = false, NoHorizontalBand = false, NoVerticalBand = true };
+            Shading shading1 = new Shading() { Val = ShadingPatternValues.Clear, Color = "auto", Fill = "1F497D", ThemeFill = ThemeColorValues.Text2 };
+
+            props.Append(shading1);
+
+            props.Append(tableLook1);
+            table.AppendChild<TableProperties>(props);
+
+            var hr = new TableRow();
+
+            for (var j = 0; j < 7; j++)
+            {
+                var hc = new TableCell();
+                switch (j)
+                {
+                    case 0:
+                        hc.Append(new Paragraph(new Run(new Text("Descripción del Control"))));
+                        hc.Append(new TableCellProperties(
+                            new TableCellWidth { Width = "2600" }));
+                        break;
+                    case 1:
+                        hc.Append(new Paragraph(new Run(new Text("Cargo del Responsable"))));
+                        break;
+                    case 2:
+                        hc.Append(new Paragraph(new Run(new Text("Periodicidad"))));
+                        break;
+                    case 3:
+                        hc.Append(new Paragraph(new Run(new Text("Oportunidad"))));
+                        break;
+                    case 4:
+                        hc.Append(new Paragraph(new Run(new Text("Grado de automatización"))));
+                        break;
+                    case 5:
+                        hc.Append(new Paragraph(new Run(new Text("Formalización"))));
+                        break;
+                    case 6:
+                        hc.Append(new Paragraph(new Run(new Text("Calificación  del Control"))));
+                        break;
+
+                }
+
+
+                hr.Append(hc);
+
+            }
+            table.Append(hr);
+
+            List<int> controlesAddId = new List<int>();
+
+            foreach (var item in data.Riesgos)
+            {
+                
+                foreach (var controls in item.Controles)
+                {
+                    // Permite agregar controles no repetidos
+                    var flag= controlesAddId.FirstOrDefault(x => x == controls.Id);
+                    if (flag.Equals(0))
+                    {
+                        controlesAddId.Add(controls.Id);
+
+                        var tr = new TableRow();
+
+                        for (var j = 0; j < 7; j++)
+                        {
+                            var tc = new TableCell();
+                            switch (j)
+                            {
+                                case 0:
+                                    tc.Append(new Paragraph(new Run(new Text(controls.Descripcion))));
+                                    break;
+                                case 1:
+                                    tc.Append(new Paragraph(new Run(new Text(controls.Cargo))));
+                                    break;
+                                case 2:
+                                    tc.Append(new Paragraph(new Run(new Text(controls.Periodicidad))));
+                                    break;
+                                case 3:
+                                    tc.Append(new Paragraph(new Run(new Text(controls.Oportunidad))));
+                                    break;
+                                case 4:
+
+                                    tc.Append(new Paragraph(new Run(new Text(controls.Grado))));
+
+                                    break;
+                                case 5:
+                                    tc.Append(new Paragraph(new Run(new Text(controls.Formalizacion))));
+                                    break;
+                                case 6:
+                                    tc.Append(new Paragraph(new Run(new Text(controls.Calificacion))));
+                                    break;
+                            }
+
+                            // Assume you want columns that are automatically sized.
+                            tc.Append(new TableCellProperties(
+                                new TableCellWidth { Type = TableWidthUnitValues.Auto }));
+
+                            tr.Append(tc);
+                        }
+
+                        table.Append(tr);
+
+                    }
+                }
+
+                
+            }
+
+            return table;
+            //}
+        }
 
         private Paragraph AddParagraph(string txt, bool bold, JustificationValues pjustification)
         {

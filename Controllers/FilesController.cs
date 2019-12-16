@@ -62,6 +62,46 @@ namespace WebApplication21.Controllers
             }
         }
 
+        [HttpGet("ExportPrintPerfilCliente")]
+        [Produces("application/ms-word")]
+        public async Task<IActionResult> ExportPrintPerfilCliente()
+        {
+            try
+            {
+                var demoDto = new PrintPerfilCliente() {
+
+                    QVAL1="reemplazdo1",
+                    QVAL2 = "reemplazdo2",
+                    QVAL3 = "reemplazdo3",
+                    QVAL4 = "reemplazdo4",
+                    QVAL5 = "reemplazdo5",
+                    QVAL6 = "reemplazdo6",
+                    QVAL7 = "reemplazdo7",
+                    QVAL8 = "reemplazdo8",
+                    QVAL9 = "reemplazdo9",
+                    QVAB10 = "reemplazdo10",
+                    QVAB11 = "reemplazdo11",
+                    QVAB12 = "reemplazdo12",
+                    QVAB13 = "reemplazdo13",
+                    QVAB14 = "reemplazdo14",
+                    QVAB15 = "reemplazdo15",
+                    QVAB16 = "reemplazdo16",
+
+                };
+                OutDto outDto = new OutDto
+                {
+                    NameModel = "PrintPerfilCliente",
+                    Result = demoDto
+                };
+
+                return Ok(outDto);
+            }
+            catch (Exception ex)
+            {
+                //log the exception
+                return BadRequest();
+            }
+        }
         [HttpGet("ExportDoc")]
         public  IActionResult ExportDoc()
         {

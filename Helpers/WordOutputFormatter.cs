@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using WebApplication21.Dtos;
 using WebApplication21.sakila;
 using Control = WebApplication21.sakila.Control;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace WebApplication21.Helpers
 {
@@ -40,11 +42,17 @@ namespace WebApplication21.Helpers
             OutDto viewModel1 = context.Object as OutDto;
             
             EtapaIdentificacion viewModelEtapaIdentificacion=null;
+            PrintPerfilCliente viewModelPerfilCliente = null;
             // Identifica el Tipo de Objeto , para poder generar el documento adecuado y/o reutilizar la Clase
             if (viewModel1.NameModel.Equals("EtapaIdentificacion"))
             {
                 viewModelEtapaIdentificacion = viewModel1.Result as EtapaIdentificacion;
                 templatePath = string.Format("./DataExport/my-template.docx");
+            }
+            if (viewModel1.NameModel.Equals("PrintPerfilCliente"))
+            {
+                viewModelPerfilCliente = viewModel1.Result as PrintPerfilCliente;
+                templatePath = string.Format("./DataExport/Impresion1.docx");
             }
 
             //open the template then save it as another file (while also stream it to the user)
@@ -58,13 +66,35 @@ namespace WebApplication21.Helpers
                 // using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
                 using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(mem, true))
                 {
+                    if (viewModelPerfilCliente != null)
+                    {
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL1", viewModelPerfilCliente.QVAL1);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL2", viewModelPerfilCliente.QVAL2);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL3", viewModelPerfilCliente.QVAL3);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL4", viewModelPerfilCliente.QVAL4);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL5", viewModelPerfilCliente.QVAL5);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL6", viewModelPerfilCliente.QVAL6);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL7", viewModelPerfilCliente.QVAL7);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL8", viewModelPerfilCliente.QVAL8);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL9", viewModelPerfilCliente.QVAL9);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL10", viewModelPerfilCliente.QVAB10);
+                        SearchAndReplaceTextInTable(wordDoc, "QVAL11", viewModelPerfilCliente.QVAB11);
+                        SearchAndReplaceTextInTable(wordDoc, "QVALD", viewModelPerfilCliente.QVAB12);
+                        SearchAndReplaceTextInTable(wordDoc, "QVALD", viewModelPerfilCliente.QVAB13);
+                        SearchAndReplaceTextInTable(wordDoc, "QVALD", viewModelPerfilCliente.QVAB14);
+                        SearchAndReplaceTextInTable(wordDoc, "QVALD", viewModelPerfilCliente.QVAB15);
+                        SearchAndReplaceTextInTable(wordDoc, "QVALD", viewModelPerfilCliente.QVAB16);
+                    }
+                    Debug.WriteLine("");
 
                     if (viewModelEtapaIdentificacion != null) {
+
+
 
                     var body = wordDoc.MainDocumentPart.Document.Body;
                     var paras = body.Elements<Paragraph>();
 
-                    SearchAndReplaceText(wordDoc, "nomfile", "CANALES ELECTRONICO");
+                    SearchAndReplaceText2(wordDoc, "nomfile", "CANALES ELECTRONICO");
                     SearchAndReplaceText(wordDoc, "inombre", "Ing. Armando Manuel Gonzales Cajes");
                     SearchAndReplaceText(wordDoc, "icargo", "Asistente de Cumplimiento");
 
@@ -96,8 +126,8 @@ namespace WebApplication21.Helpers
                     body.Append(AddParagraph("Anexo 03", true, JustificationValues.Center));
                     body.Append(AddParagraph("CONTROLES IDENTIFICADOS Y CARACTERÍSTICAS", false, JustificationValues.Center));
                     body.Append(AddParagraph("", false, JustificationValues.Center));
+                    
                   
-
                     body.Append(AddTableAnexo3(viewModelEtapaIdentificacion));
 
                     wordDoc.Close();
@@ -123,57 +153,43 @@ namespace WebApplication21.Helpers
         public Table AddTableAnexo2(EtapaIdentificacion data)
         {
             Table table = new Table();
-
+            UInt32Value size = 6;
             TableProperties props = new TableProperties(
 
                     new TableBorders(
                     new TopBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8,
+                        Size = size,
                         
                     },
                     new BottomBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     },
                     new LeftBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     },
                     new RightBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     },
                     new InsideHorizontalBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     },
-                    new TableLook() {
-                        Val = "04A0",
-                        FirstRow = true,
-                        LastRow = false,
-                        FirstColumn = true,
-                        LastColumn = false,
-                        NoHorizontalBand = false,
-                        NoVerticalBand = true },
 
                     new InsideVerticalBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     }));
 
-            TableLook tableLook1 = new TableLook() { Val = "04A0", FirstRow = true, LastRow = false, FirstColumn = true, LastColumn = false, NoHorizontalBand = false, NoVerticalBand = true };
-            Shading shading1 = new Shading() { Val = ShadingPatternValues.Clear, Color = "auto", Fill = "1F497D", ThemeFill = ThemeColorValues.Text2 };
-
-            props.Append(shading1);
-
-            props.Append(tableLook1);
             table.AppendChild<TableProperties>(props);
 
             var hr = new TableRow();
@@ -181,6 +197,21 @@ namespace WebApplication21.Helpers
             for (var j = 0; j < 6; j++)
             {
                 var hc = new TableCell();
+
+                var tcp = new TableCellProperties(new TableCellWidth()
+                {
+                    Type = TableWidthUnitValues.Dxa,
+                    Width = "2000",
+                });
+                // Add cell shading.
+                var shading = new Shading()
+                {
+                    Color = "auto",
+                    Fill = "ABCDEF",
+                    Val = ShadingPatternValues.Clear
+                };
+
+
                 switch (j)
                 {
                     case 0:
@@ -207,8 +238,9 @@ namespace WebApplication21.Helpers
 
 
                 }
-                
-                
+
+                tcp.Append(shading);
+                hc.Append(tcp);
 
                 hr.Append(hc);
 
@@ -267,6 +299,7 @@ namespace WebApplication21.Helpers
         public Table AddTableAnexo3(EtapaIdentificacion data)
         {
             Table table = new Table();
+            UInt32Value size = 6;
 
             TableProperties props = new TableProperties(
 
@@ -274,52 +307,35 @@ namespace WebApplication21.Helpers
                     new TopBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8,
+                        Size = size,
 
                     },
                     new BottomBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     },
                     new LeftBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     },
                     new RightBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     },
                     new InsideHorizontalBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     },
-                    new TableLook()
-                    {
-                        Val = "04A0",
-                        FirstRow = true,
-                        LastRow = false,
-                        FirstColumn = true,
-                        LastColumn = false,
-                        NoHorizontalBand = false,
-                        NoVerticalBand = true
-                    },
-
                     new InsideVerticalBorder
                     {
                         Val = new EnumValue<BorderValues>(BorderValues.Single),
-                        Size = 8
+                        Size = size
                     }));
 
-            TableLook tableLook1 = new TableLook() { Val = "04A0", FirstRow = true, LastRow = false, FirstColumn = true, LastColumn = false, NoHorizontalBand = false, NoVerticalBand = true };
-            Shading shading1 = new Shading() { Val = ShadingPatternValues.Clear, Color = "auto", Fill = "1F497D", ThemeFill = ThemeColorValues.Text2 };
-
-            props.Append(shading1);
-
-            props.Append(tableLook1);
             table.AppendChild<TableProperties>(props);
 
             var hr = new TableRow();
@@ -327,6 +343,19 @@ namespace WebApplication21.Helpers
             for (var j = 0; j < 7; j++)
             {
                 var hc = new TableCell();
+                var tcp = new TableCellProperties(new TableCellWidth()
+                {
+                    Type = TableWidthUnitValues.Dxa,
+                    Width = "2000",
+                });
+                // Add cell shading.
+                var shading = new Shading()
+                {
+                    Color = "auto",
+                    Fill = "ABCDEF",
+                    Val = ShadingPatternValues.Clear
+                };
+
                 switch (j)
                 {
                     case 0:
@@ -355,6 +384,8 @@ namespace WebApplication21.Helpers
 
                 }
 
+                tcp.Append(shading);
+                hc.Append(tcp);
 
                 hr.Append(hc);
 
@@ -429,6 +460,7 @@ namespace WebApplication21.Helpers
         {
             var runProp = new RunProperties();
            // runProp.Append(fsize);
+
             if (bold)
                 runProp.Append(new Bold());
 
@@ -449,10 +481,42 @@ namespace WebApplication21.Helpers
             return p;
         }
 
-        public static void SearchAndReplaceText (WordprocessingDocument wordDoc,
+        public static void SearchAndReplaceTextInTable(WordprocessingDocument wordDoc,
+            string searchText, string replaceText)
+        {
+            var tables = wordDoc.MainDocumentPart.Document.Descendants<Table>().ToList();
+
+            foreach (Table t in tables)
+            {
+                var rows = t.Elements<TableRow>();
+                foreach (TableRow row in rows)
+                {
+                    var cells = row.Elements<TableCell>();
+                    foreach (TableCell cell in cells)
+                    {
+                        if (cell.InnerText.Contains(searchText))
+                        {
+                            Paragraph p = cell.Elements<Paragraph>().First(x => x.InnerText.Contains(searchText));
+                            Run r = p.Elements<Run>().ElementAt(1);
+                            Text t1 = r.Elements<Text>().First();
+                            t1.Text = replaceText;
+
+                            return; //Reemplazará solo el primero que encuentre.
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+            public static void SearchAndReplaceText (WordprocessingDocument wordDoc,
             string searchText , string replaceText)
         {
-            // pendiente de refactorizar..
+
+            //pendiente de refactorizar..
             foreach (var text in wordDoc.MainDocumentPart.Document.Descendants<Text>())
             {
                 if (text.Text.Trim().Contains(searchText))
@@ -460,7 +524,32 @@ namespace WebApplication21.Helpers
                     text.Text = text.Text.Trim().Replace(searchText, replaceText);
                 }
             }
+        }    
+
+            public static void SearchAndReplaceText2(WordprocessingDocument wordDoc,
+    string searchText, string replaceText)
+        {
+            // pendiente de refactorizar..
+
+            var body = wordDoc.MainDocumentPart.Document.Body;
+            var paras = body.Elements<Paragraph>();
+
+            //search & replace string
+            foreach (var para in paras)
+            {
+                foreach (var run in para.Elements<Run>())
+                {
+                    foreach (var text in run.Elements<Text>())
+                    {
+                        if (text.Text.Trim().Contains(searchText))
+                        {
+                            text.Text = text.Text.Trim().Replace(searchText, replaceText);
+                        }
+                    }
+                }
+            }
         }
+
 
         public static Paragraph PageBreak()
         {

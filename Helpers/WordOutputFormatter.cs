@@ -15,6 +15,7 @@ using WebApplication21.sakila;
 using Control = WebApplication21.sakila.Control;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using WebApplication21.Utility;
 
 namespace WebApplication21.Helpers
 {
@@ -93,10 +94,16 @@ namespace WebApplication21.Helpers
 
                     var body = wordDoc.MainDocumentPart.Document.Body;
                     var paras = body.Elements<Paragraph>();
+                    var nomfile = string.Format("CMP-CUM-INF-{0}-{1}-MAGOCA",DateTime.Now.Year,Util.NormalizarCampo(viewModelEtapaIdentificacion.Id.ToString(),4));
+                    var fecha = string.Format("Piura, {0} de {1} de {2}",DateTime.Now.Day,Util.MonthName(DateTime.Now), DateTime.Now.Year);
+                       
 
-                    SearchAndReplaceText2(wordDoc, "nomfile", "CANALES ELECTRONICO");
+
+                    SearchAndReplaceText2(wordDoc, "nomfile", nomfile);
                     SearchAndReplaceText(wordDoc, "inombre", "Ing. Armando Manuel Gonzales Cajes");
                     SearchAndReplaceText(wordDoc, "icargo", "Asistente de Cumplimiento");
+                    SearchAndReplaceText(wordDoc, "nomProd", viewModelEtapaIdentificacion.Nombre);
+                    SearchAndReplaceText(wordDoc, "fecha", fecha);
 
                     body.Append(AddParagraph("Anexo 01", true, JustificationValues.Center));
                     body.Append(AddParagraph("IDENTIFICACIÓN DE LOS RIESGOS DE LAFT Y RIESGOS ASOCIADOS", false, JustificationValues.Center));

@@ -68,7 +68,7 @@ namespace WebApplication21.Controllers
         {
             try
             {
-                var demoDto = new PrintPerfilCliente() {
+                var demoDto = new PrintPerfilTrabajador() {
 
                     QVAL1="reemplazdo1",
                     QVAL2 = "reemplazdo2",
@@ -86,11 +86,16 @@ namespace WebApplication21.Controllers
                     QVAB14 = "reemplazdo14",
                     QVAB15 = "reemplazdo15",
                     QVAB16 = "reemplazdo16",
+                    QVAB17 = "reemplazdo13",
+                    QVAB18 = "reemplazdo14",
+                    QVAB19 = "reemplazdo15",
+                    QVAB20 = "reemplazdo16",
+
 
                 };
                 OutDto outDto = new OutDto
                 {
-                    NameModel = "PrintPerfilCliente",
+                    NameModel = "PrintPerfilTrabajador",
                     Result = demoDto
                 };
 

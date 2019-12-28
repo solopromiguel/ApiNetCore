@@ -44,6 +44,8 @@ namespace WebApplication21.Helpers
             
             EtapaIdentificacion viewModelEtapaIdentificacion=null;
             PrintPerfilCliente viewModelPerfilCliente = null;
+
+            PrintPerfilTrabajador viewModelPerfilTrabajador = null;
             // Identifica el Tipo de Objeto , para poder generar el documento adecuado y/o reutilizar la Clase
             if (viewModel1.NameModel.Equals("EtapaIdentificacion"))
             {
@@ -56,6 +58,14 @@ namespace WebApplication21.Helpers
                 templatePath = string.Format("./DataExport/Impresion1.docx");
             }
 
+            if (viewModel1.NameModel.Equals("PrintPerfilTrabajador"))
+            {
+                viewModelPerfilTrabajador = viewModel1.Result as PrintPerfilTrabajador;
+                templatePath = string.Format("./DataExport/Impresion2.docx");
+            }
+
+
+
             //open the template then save it as another file (while also stream it to the user)
 
             byte[] byteArray = File.ReadAllBytes(templatePath);
@@ -67,7 +77,33 @@ namespace WebApplication21.Helpers
                 // using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
                 using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(mem, true))
                 {
-                    if (viewModelPerfilCliente != null)
+                    if (viewModelPerfilTrabajador != null)
+                    {
+
+                        SearchAndReplaceTextInTable(wordDoc, "inumero", viewModelPerfilTrabajador.QVAL1);
+                        SearchAndReplaceTextInTable(wordDoc, "icodigo", viewModelPerfilTrabajador.QVAL2);
+                        SearchAndReplaceTextInTable(wordDoc, "idoi", viewModelPerfilTrabajador.QVAL3);
+                        SearchAndReplaceTextInTable(wordDoc, "idocumento", viewModelPerfilTrabajador.QVAL4);
+                        SearchAndReplaceTextInTable(wordDoc, "iedad", viewModelPerfilTrabajador.QVAL5);
+                        SearchAndReplaceTextInTable(wordDoc, "idependencia", viewModelPerfilTrabajador.QVAL6);
+                        SearchAndReplaceTextInTable(wordDoc, "taza", viewModelPerfilTrabajador.QVAL7);
+                        SearchAndReplaceTextInTable(wordDoc, "ioficina", viewModelPerfilTrabajador.QVAL8);
+                        SearchAndReplaceTextInTable(wordDoc, "ipuesto", viewModelPerfilTrabajador.QVAL9);
+                        SearchAndReplaceTextInTable(wordDoc, "iarea", viewModelPerfilTrabajador.QVAB10);
+                        SearchAndReplaceTextInTable(wordDoc, "iantiguedad", viewModelPerfilTrabajador.QVAB11);
+                        SearchAndReplaceTextInTable(wordDoc, "isancion", viewModelPerfilTrabajador.QVAB12);
+                        SearchAndReplaceTextInTable(wordDoc, "iriesgo", viewModelPerfilTrabajador.QVAB13);
+                        SearchAndReplaceTextInTable(wordDoc, "imantiene", viewModelPerfilTrabajador.QVAB14);
+                        SearchAndReplaceText(wordDoc, "ianalisis", viewModelPerfilTrabajador.QVAB15);
+                        SearchAndReplaceText(wordDoc, "iconlusion", viewModelPerfilTrabajador.QVAB16);
+                        SearchAndReplaceTextInTable(wordDoc, "igeneral", viewModelPerfilTrabajador.QVAB17);
+                        SearchAndReplaceTextInTable(wordDoc, "idespues", viewModelPerfilTrabajador.QVAB18);
+                        SearchAndReplaceTextInTable(wordDoc, "iacciones", viewModelPerfilTrabajador.QVAB19);
+                        SearchAndReplaceText(wordDoc, "datofecha ", viewModelPerfilTrabajador.QVAB20);
+                    }
+
+
+                        if (viewModelPerfilCliente != null)
                     {
                         SearchAndReplaceTextInTable(wordDoc, "QVAL1", viewModelPerfilCliente.QVAL1);
                         SearchAndReplaceTextInTable(wordDoc, "QVAL2", viewModelPerfilCliente.QVAL2);
@@ -503,12 +539,21 @@ namespace WebApplication21.Helpers
                     {
                         if (cell.InnerText.Contains(searchText))
                         {
-                            Paragraph p = cell.Elements<Paragraph>().First(x => x.InnerText.Contains(searchText));
-                            Run r = p.Elements<Run>().ElementAt(1);
-                            Text t1 = r.Elements<Text>().First();
-                            t1.Text = replaceText;
+                            try
+                            {
+                                Paragraph p = cell.Elements<Paragraph>().First(x => x.InnerText.Contains(searchText));
+                                Run r = p.Elements<Run>().ElementAt(0);
+                                Text t1 = r.Elements<Text>().First();
+                                t1.Text = replaceText;
 
-                            return; //Reemplazará solo el primero que encuentre.
+                                return; //Reemplazará sólo el primero que encuentre.
+                            }
+                            catch (Exception ex)
+                            {
+
+                                //throw;
+                            }
+                           
                         }
 
                     }

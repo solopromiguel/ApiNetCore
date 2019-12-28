@@ -55,10 +55,77 @@ namespace WebApplication21.Controllers
                 throw;
             }
             
-        }  
-        
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddControl([FromBody] Control control)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                int UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                control.UsersId = UserId;
+                control.Estado = true;
+                control.IsMain = true; // Es la actual version.
+                control.Calificacion = "FUERTE"; // Por definir.
+
+                _context.Control.Add(control);
+                 await  _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest();
+            }
+           
+
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddCaracteristica([FromBody] Caracteristica caracteristica)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                int UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                caracteristica.UsersId = UserId;
+                caracteristica.Estado = true;
+                caracteristica.FactorId = 1;
+
+                _context.Caracteristicas.Add(caracteristica);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest();
+            }
 
 
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddIdent([FromBody] Identificacion identificacion)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-      }
+            int UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            identificacion.UsersId = UserId;
+
+            return Ok();
+
+        }
+
+
+    }
 }
